@@ -3,6 +3,7 @@ import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
+import { FaGithub } from "react-icons/fa";
 
 const auth = () => {
   const router = useRouter();
@@ -109,6 +110,12 @@ const auth = () => {
           >
             {variant === "login" ? "Log In" : "Sing Up"}
           </button>
+        </div>
+        <div
+          className="w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition"
+          onClick={() => signIn("github", { callbackUrl: "/" })}
+        >
+          <FaGithub size={30} />
         </div>
         <p className="text-white">
           {variant === "login" ? "Don't have account?" : "Have an account?"}{" "}

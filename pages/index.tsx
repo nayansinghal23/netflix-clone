@@ -1,6 +1,8 @@
+import Navbar from "@/components/Navbar";
+import axios from "axios";
 import { NextPageContext } from "next";
-import { getSession, signOut } from "next-auth/react";
-import React from "react";
+import { getSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -19,15 +21,23 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 const index = () => {
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    axios
+      .get("/api/current")
+      .then((res) => {
+        const { currentUser } = res.data;
+        setUser(currentUser);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
-    <div className="bg-black">
-      <h1 className="text-white">index</h1>
-      <button
-        className="w-20 h-10 text-white bg-yellow-500"
-        onClick={() => signOut()}
-      >
-        Log out
-      </button>
+    <div className="h-screen">
+      <Navbar user={user} />
     </div>
   );
 };

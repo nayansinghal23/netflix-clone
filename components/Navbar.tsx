@@ -13,7 +13,10 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
   }, []);
 
   return (
-    <div className="bg-black relative h-10 w-full flex items-center justify-between px-2 text-white">
+    <div
+      className="bg-black fixed w-full flex items-center justify-between px-2 text-white z-30"
+      style={{ height: "5%" }}
+    >
       <p>Navbar</p>
       <div className="hover:cursor-pointer" onClick={toggleSignOutBar}>
         <img
@@ -23,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
         />
       </div>
       {showSignOutModal && (
-        <div className="bg-black w-56 absolute top-14 right-2 py-5 flex-col border-2 border-gray-800 flex">
+        <div className="bg-black w-56 absolute top-14 right-2 py-5 flex-col border-2 border-gray-800 flex z-40">
           <div className="flex flex-col gap-3">
             <div className="px-3 group/item flex flex-row gap-3 items-center w-full">
               <img

@@ -1,3 +1,4 @@
+import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaPlayCircle } from "react-icons/fa";
@@ -11,6 +12,43 @@ interface MovieListProps {
 }
 
 const MovieList: React.FC<MovieListProps> = ({ movies }) => {
+  const [present, setPresent] = useState<string[]>();
+
+  const isAdded = useCallback(async (movieId: string) => {
+    try {
+      const user = await axios.get("/api/current");
+      const { currentUser } = user.data;
+      const res = await axios.post("/api/wishlist", {
+        movieId,
+        user: currentUser,
+      });
+      axios
+        .get("/api/favourites")
+        .then((res) => {
+          const { user } = res.data;
+          setPresent([...user?.favoriteIds]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  // used to check whether the movie is in wishlist or not at the initial load of page
+  useEffect(() => {
+    axios
+      .get("/api/favourites")
+      .then((res) => {
+        const { user } = res.data;
+        setPresent([...user?.favoriteIds]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [isAdded]);
+
   return (
     <div className="text-white ml-3 mt-3 pb-3 flex flex-col gap-4">
       <h1>All Movies</h1>
@@ -34,8 +72,13 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
                 <Link href={`/movie/${movie?.id}`}>
                   <FaPlayCircle className="hover:cursor-pointer" />
                 </Link>
-                <div onClick={() => {}} className="hover:cursor-pointer">
-                  {false ? (
+                <div
+                  onClick={() => {
+                    isAdded(movie?.id);
+                  }}
+                  className="hover:cursor-pointer"
+                >
+                  {present?.includes(movie?.id) ? (
                     <MdOutlinePlaylistAddCheck />
                   ) : (
                     <MdOutlinePlaylistAdd />

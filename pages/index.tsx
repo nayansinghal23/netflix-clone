@@ -1,10 +1,13 @@
 import Billboard from "@/components/Billboard";
-import MovieList from "@/components/MovieList";
+import dynamic from "next/dynamic";
+// import MovieList from "@/components/MovieList";
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+
+const MovieList = dynamic(() => import("@/components/MovieList"));
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);

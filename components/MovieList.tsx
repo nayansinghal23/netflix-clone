@@ -1,4 +1,5 @@
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaPlayCircle } from "react-icons/fa";
@@ -13,6 +14,12 @@ interface MovieListProps {
 
 const MovieList: React.FC<MovieListProps> = ({ movies }) => {
   const [present, setPresent] = useState<string[]>();
+  const imgArr: string[] = [
+    "thumbnail.webp",
+    "sintel.webp",
+    "steel.webp",
+    "elephants.webp",
+  ];
 
   const isAdded = useCallback(async (movieId: string) => {
     try {
@@ -62,9 +69,16 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
               }}
               className="flex flex-col justify-between p-3 w-60 h-50"
             >
-              <img
+              {/* <img
                 src={movie?.thumbnailUrl}
                 alt="movie-img"
+                className="w-30 h-30 rounded-md"
+              /> */}
+              <Image
+                alt="movie-img"
+                height={300}
+                width={300}
+                src={`/images/${imgArr[index]}`}
                 className="w-30 h-30 rounded-md"
               />
               <h2>{movie?.title}</h2>
@@ -93,3 +107,4 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
 };
 
 export default MovieList;
+// Big Buck Bunny -> thumbnail.jpg
